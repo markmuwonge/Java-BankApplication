@@ -29,8 +29,10 @@ public class OpenAccount{
     JButton createAccountBtn, homeBtn;
     
     AWindowListener awl = new AWindowListener();
-    String accNo = "";
     
+    Connection con;
+    Statement st;
+    ResultSet rs;
     
     public OpenAccount()
     {
@@ -140,19 +142,19 @@ public class OpenAccount{
                     try
                     {
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/marks_test_db", "root", "");
-                        Statement st = con.createStatement();
+                        con = DriverManager.getConnection("jdbc:mysql://localhost/marks_test_db", "root", "");
+                        st = con.createStatement();
                         
-                        ResultSet rs = st.executeQuery("select concat("+ "'"+ accountType + "'" + "," + "'" + gender + "'" + ", (select lpad((select ifnull((SELECT max(substr(AcNo, 3, 3)) from bank as t where substr(AcNo, 1, 1) = " + "'" +accountType + "'" + "), 0) + 1), 3, '0')))");
+                        rs = st.executeQuery("select concat("+ "'"+ accountType + "'" + "," + "'" + gender + "'" + ", (select lpad((select ifnull((SELECT max(substr(AcNo, 3, 3)) from bank as t where substr(AcNo, 1, 1) = " + "'" +accountType + "'" + "), 0) + 1), 3, '0')))");
                         rs.next();         
-                        accNo = rs.getString(1);
+                        String accNo = rs.getString(1);
                         
                         String s = "insert into bank values "+ "((select concat("+ "'"+ accountType + "'" + "," + "'" + gender + "'" + ", (select lpad((select ifnull((SELECT max(substr(AcNo, 3, 3)) from bank as t where substr(AcNo, 1, 1) = " + "'" +accountType + "'" + "), 0) + 1), 3, '0')))), " + "'" + nameTxtF.getText() + "'" + "," + "'" + addressTxtF.getText() + "'" + ")";
                         st.executeUpdate(s);
                      
-                        JOptionPane.showMessageDialog(null, "Account Created");
+                        JOptionPane.showMessageDialog(null, "Account " + accNo +" Created");
                         
-                        Home h = new Home(accNo);
+                        Home h = new Home();
                         f.dispose();
                     }
                     catch(Exception e)

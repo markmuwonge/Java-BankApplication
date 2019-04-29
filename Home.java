@@ -27,11 +27,6 @@ public class Home{
         loadFrame();
     }
     
-    public Home(String accNo)
-    {
-        accNumberSet = true;
-        loadFrame();
-    }
     
     public void loadFrame()
     {
@@ -56,7 +51,8 @@ public class Home{
             
             public void actionPerformed(ActionEvent ae)
             {
-                
+                DepositAndWithdraw daw = new DepositAndWithdraw("Deposit");
+                f.dispose(); 	
             }
         });
         withdrawMoneyBtn = new JButton("Withdraw Money");
@@ -64,7 +60,8 @@ public class Home{
             
             public void actionPerformed(ActionEvent ae)
             {
-                
+                DepositAndWithdraw daw = new DepositAndWithdraw("Withdraw");
+                f.dispose(); 	
             }
         });
         checkBalanceBtn = new JButton("Check Balance");
@@ -72,7 +69,8 @@ public class Home{
             
             public void actionPerformed(ActionEvent ae)
             {
-                
+                CheckBalance cb = new CheckBalance();
+                f.dispose();
             }
         });
         
@@ -81,16 +79,6 @@ public class Home{
         f.add(withdrawMoneyBtn);
         f.add(checkBalanceBtn);
         
-        if (accNumberSet == true)
-        {
-            openAccountBtn.setEnabled(false);
-        }
-        else
-        {
-            depositMoneyBtn.setEnabled(false);
-            withdrawMoneyBtn.setEnabled(false);
-            checkBalanceBtn.setEnabled(false);
-        }
         
         
         f.setVisible(true);
